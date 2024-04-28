@@ -57,12 +57,16 @@ class RegionMonitoringPerformer: AnyLocationPerformer {
     func invokedMethod(event: CoreLocationDelegateEvent) {
         switch event {
         case .didEnterRegion(let region):
+            guard region == self.region else { return }
             stream?.yield(.didEnterTo(region: region))
         case .didExitRegion(let region):
+            guard region == self.region else { return }
             stream?.yield(.didExitTo(region: region))
         case .didStartMonitoringFor(let region):
+            guard region == self.region else { return }
             stream?.yield(.didStartMonitoringFor(region: region))
         case .monitoringDidFailFor(let region, let error):
+            guard region == self.region else { return }
             stream?.yield(.monitoringDidFailFor(region: region, error: error))
         default:
             fatalError("Method can't be execute by this performer: \(String(describing: self)) for event: \(type(of: event))")
